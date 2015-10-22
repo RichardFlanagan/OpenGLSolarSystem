@@ -3,19 +3,20 @@
 
 #include <string>
 #include <GL/freeglut.h>
+#include "ErrorState.h"
 
-class ShaderBuilder{
+class ShaderBuilder : public ErrorState {
 public:
-	GLuint getModelToWorldTransformLocation() const;
-	GLuint getWorldToViewTransformLocation() const;
-	GLuint getProjectionTransformLocation() const;
+	const GLuint getModelToWorldTransformLocation();
+	const GLuint getWorldToViewTransformLocation();
+	const GLuint getProjectionTransformLocation();
 private:
 	GLuint gModelToWorldTransformLocation;
 	GLuint gWorldToViewTransformLocation;
 	GLuint gProjectionTransformLocation;
 
 	void addShader(GLuint shaderProgram, const char* pShaderText, GLenum shaderType);
-	std::string readFileToString(char* filename) const;
+	const std::string readFileToString(char* filename);
 	void buildShaders();
 };
 

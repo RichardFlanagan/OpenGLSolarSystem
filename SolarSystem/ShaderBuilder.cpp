@@ -9,8 +9,7 @@
 
 void ShaderBuilder::addShader(GLuint shaderProgram, const char* pShaderText, GLenum shaderType){
     GLuint shaderObj = glCreateShader(shaderType);
-
-	ASSERTION((shaderObj==0), "Error creating shader type " + shaderType);
+	ASSERTION(shaderObj==0, "Error creating shader type " + shaderType);
 
     const GLchar* p[1];
     p[0] = pShaderText;
@@ -26,13 +25,13 @@ void ShaderBuilder::addShader(GLuint shaderProgram, const char* pShaderText, GLe
         glGetShaderInfoLog(shaderObj, 1024, NULL, InfoLog);
 		std::stringstream ss;
 		ss << "Error compiling shader type " << shaderType << ": " << InfoLog << std::endl;
-		ASSERTION(false, ss.str());
+		ASSERTION(!success, ss.str());
     }
 
     glAttachShader(shaderProgram, shaderObj);
 }
 
-std::string ShaderBuilder::readFileToString(char* filename) const {
+const std::string ShaderBuilder::readFileToString(char* filename) {
 	std::ifstream file (filename, std::ios::in);
 	if (file.is_open()){
         std::stringstream ss;
@@ -45,10 +44,7 @@ std::string ShaderBuilder::readFileToString(char* filename) const {
 
 void ShaderBuilder::buildShaders(){
     GLuint shaderProgram = glCreateProgram();
-
-    if (shaderProgram == 0) {
-		assert((0, "Error creating shader program\n"));
-    }
+	ASSERTION(shaderProgram==0, "Error creating shader program");
 
 	std::string VS = readFileToString("vertexShader.glsl");
 	std::string FS = readFileToString("fragmentShader.glsl");
@@ -65,37 +61,36 @@ void ShaderBuilder::buildShaders(){
 		glGetProgramInfoLog(shaderProgram, sizeof(errorLog), NULL, errorLog);
 		std::stringstream ss;
 		ss << "Error linking shader program: " << errorLog << std::endl;
-		assert((0, ss));
+		ASSERTION(success==0, ss.str());
 	}
 
     glValidateProgram(shaderProgram);
     glGetProgramiv(shaderProgram, GL_VALIDATE_STATUS, &success);
     if (!success) {
         glGetProgramInfoLog(shaderProgram, sizeof(errorLog), NULL, errorLog);
-        std::cerr << "Error linking shader program: " << errorLog << std::endl;
         std::stringstream ss;
 		ss << "Error linking shader program: " << errorLog << std::endl;
-		assert((0, ss));
+		ASSERTION(!success, ss.str());
     }
 
     glUseProgram(shaderProgram);
 
     gModelToWorldTransformLocation = glGetUniformLocation(shaderProgram, "gModelToWorldTransform");
-    assert((gModelToWorldTransformLocation != 0xFFFFFFFF, "Error: gModelToWorldTransformLocation not valid"));
+    ASSERTION(gModelToWorldTransformLocation != 0xFFFFFFFF, "Error: gModelToWorldTransformLocation not valid");
     
 	gWorldToViewTransformLocation = glGetUniformLocation(shaderProgram, "gWorldToViewTransform");
-    assert((gWorldToViewTransformLocation != 0xFFFFFFFF, "Error: gWorldToViewTransformLocation not valid"));
+	ASSERTION(gWorldToViewTransformLocation != 0xFFFFFFFF, "Error: gWorldToViewTransformLocation not valid");
     
 	gProjectionTransformLocation = glGetUniformLocation(shaderProgram, "gProjectionTransform"); 
-    assert((gProjectionTransformLocation != 0xFFFFFFFF, "Error: gProjectionTransformLocation not valid"));
+	ASSERTION(gProjectionTransformLocation != 0xFFFFFFFF, "Error: gProjectionTransformLocation not valid");
 }
 
-GLuint ShaderBuilder::getModelToWorldTransformLocation() const {
+const GLuint ShaderBuilder::getModelToWorldTransformLocation() {
 	return gModelToWorldTransformLocation;
 }
-GLuint ShaderBuilder::getWorldToViewTransformLocation() const {
+const GLuint ShaderBuilder::getWorldToViewTransformLocation() {
 	return gWorldToViewTransformLocation;
 }
-GLuint ShaderBuilder::getProjectionTransformLocation() const {
+const GLuint ShaderBuilder::getProjectionTransformLocation() {
 	return gProjectionTransformLocation;
 }
