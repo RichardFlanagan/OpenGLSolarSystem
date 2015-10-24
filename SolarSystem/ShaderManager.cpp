@@ -1,13 +1,12 @@
 #include <string>
-#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include "Assertion.h"
-#include "ShaderBuilder.h"
+#include "ShaderManager.h"
 
-void ShaderBuilder::addShader(GLuint shaderProgram, const char* pShaderText, GLenum shaderType){
+void ShaderManager::addShader(GLuint shaderProgram, const char* pShaderText, GLenum shaderType){
     GLuint shaderObj = glCreateShader(shaderType);
 	ASSERTION(shaderObj==0, "Error creating shader type " + shaderType);
 
@@ -31,7 +30,7 @@ void ShaderBuilder::addShader(GLuint shaderProgram, const char* pShaderText, GLe
     glAttachShader(shaderProgram, shaderObj);
 }
 
-const std::string ShaderBuilder::readFileToString(char* filename) {
+const std::string ShaderManager::readFileToString(char* filename) {
 	std::ifstream file (filename, std::ios::in);
 	if (file.is_open()){
         std::stringstream ss;
@@ -42,7 +41,7 @@ const std::string ShaderBuilder::readFileToString(char* filename) {
     return "";
 }
 
-void ShaderBuilder::buildShaders(){
+void ShaderManager::buildShaders(){
     GLuint shaderProgram = glCreateProgram();
 	ASSERTION(shaderProgram==0, "Error creating shader program");
 
@@ -83,14 +82,50 @@ void ShaderBuilder::buildShaders(){
     
 	gProjectionTransformLocation = glGetUniformLocation(shaderProgram, "gProjectionTransform"); 
 	ASSERTION(gProjectionTransformLocation != 0xFFFFFFFF, "Error: gProjectionTransformLocation not valid");
+
+	gAmbientLightIntensityLocation = glGetUniformLocation(shaderProgram, "gAmbientLightIntensity");
+	ASSERTION(gAmbientLightIntensityLocation != 0xFFFFFFFF, "Error: gAmbientLightIntensityLocation not valid");
+	
+	gDirectionalLightIntensityLocation = glGetUniformLocation(shaderProgram, "gDirectionalLightIntensity");
+	ASSERTION(gDirectionalLightIntensityLocation != 0xFFFFFFFF, "Error: gDirectionalLightIntensityLocation not valid");
+	
+	gDirectionalLightDirectionLocation = glGetUniformLocation(shaderProgram, "gDirectionalLightDirection");
+	ASSERTION(gDirectionalLightDirectionLocation != 0xFFFFFFFF, "Error: gDirectionalLightDirectionLocation not valid");
+
+	gKaLocation = glGetUniformLocation(shaderProgram, "gKa");
+	ASSERTION(gKaLocation != 0xFFFFFFFF, "Error: gKaLocation not valid");
+	
+	gKdLocation = glGetUniformLocation(shaderProgram, "gKd");
+	ASSERTION(gKaLocation != 0xFFFFFFFF, "Error: gKdLocation not valid");
 }
 
-const GLuint ShaderBuilder::getModelToWorldTransformLocation() {
+const GLuint ShaderManager::getModelToWorldTransformLocation() {
 	return gModelToWorldTransformLocation;
 }
-const GLuint ShaderBuilder::getWorldToViewTransformLocation() {
+const GLuint ShaderManager::getWorldToViewTransformLocation() {
 	return gWorldToViewTransformLocation;
 }
-const GLuint ShaderBuilder::getProjectionTransformLocation() {
+const GLuint ShaderManager::getProjectionTransformLocation() {
 	return gProjectionTransformLocation;
+}
+
+const GLuint ShaderManager::getAmbientLightIntensityLocation() {
+	return gAmbientLightIntensityLocation;
+}
+const GLuint ShaderManager::getDirectionalLightIntensityLocation() {
+	return gDirectionalLightIntensityLocation;
+}
+const GLuint ShaderManager::getDirectionalLightDirectionLocation() {
+	return gDirectionalLightDirectionLocation;
+}
+
+const GLuint ShaderManager::getKaLocation() {
+	return gKaLocation;
+}
+const GLuint ShaderManager::getKdLocation() {
+	return gKdLocation;
+}
+
+void ShaderManager::loadShaders() {
+	buildShaders();
 }

@@ -66,15 +66,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ErrorState.cpp" />
+    <ClCompile Include="LightingManager.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="ShaderBuilder.cpp" />
-    <ClCompile Include="WindowManager.cpp" />
+    <ClCompile Include="ModelLoader.cpp" />
+    <ClCompile Include="RenderManager.cpp" />
+    <ClCompile Include="ShaderManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assertion.h" />
-    <ClInclude Include="ErrorState.h" />
-    <ClInclude Include="ShaderBuilder.h" />
+    <ClInclude Include="LightingManager.h" />
+    <ClInclude Include="ModelVertex.h" />
+    <ClInclude Include="ModelLoader.h" />
+    <ClInclude Include="RenderManager.h" />
+    <ClInclude Include="ShaderManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fragmentshader.glsl" />
+    <None Include="vertexshader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
