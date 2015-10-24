@@ -6,15 +6,14 @@
 #include "ShaderManager.h"
 #include <iostream>
 
+/*
+	The instance of the RenderManager. This is required for the GLut display callback to reference the instansiated object attributes.
+*/
 RenderManager* RenderManager::renderInstance;
 
-void RenderManager::renderScene() {
+void RenderManager::renderSceneCallback() {
 	// Create our world space to view space transformation matrix
-	glm::mat4 worldToViewTransform = glm::lookAt(
-		glm::vec3(0.0f, 0.0f, 10.0f), // The position of your camera, in world space
-		glm::vec3(0.0f, 0.0f, 0.0f), // where you want to look at, in world space
-		glm::vec3(0.0f, 1.0f, 0.0f)  // Camera up direction (set to 0,-1,0 to look upside-down)
-		);
+	glm::mat4 worldToViewTransform = renderInstance->camera->getWorldToViewMatrix();
 
 	// Create out projection transform
 	glm::mat4 projectionTransform = glm::perspective(45.0f, (float)renderInstance->windowWidth / (float)renderInstance->windowHeight, 1.0f, 100.0f);
@@ -59,7 +58,7 @@ void RenderManager::renderScene() {
 	glutSwapBuffers();
 }
 
-void RenderManager::initializeGlutCallbacks() {
-	glutDisplayFunc(RenderManager::renderScene);
-	glutIdleFunc(RenderManager::renderScene);
+void RenderManager::bindDisplayCallbacks() {
+	glutDisplayFunc(RenderManager::renderSceneCallback);
+	glutIdleFunc(RenderManager::renderSceneCallback);
 }

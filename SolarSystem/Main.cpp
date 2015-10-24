@@ -9,6 +9,8 @@
 #include "ModelLoader.h"
 #include "RenderManager.h"
 #include "LightingManager.h"
+#include "Camera.h"
+#include "InputManager.h"
 
 
 unsigned int windowWidth = 800;
@@ -78,6 +80,13 @@ void setRenderOptions() {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
+void mouseClickCallback(int button, int state, int x, int y) {
+	std::cout << button << " " << state << " " << x << " " << y << std::endl;
+}
+void mouseMoveCallback(int x, int y) {
+	std::cout << "(" << x << ", " << y << ")" << std::endl;
+}
+
 int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);
@@ -94,8 +103,13 @@ int main(int argc, char** argv)
 	LightingManager lightingManager(&shaderManager);
 	lightingManager.initializeLighting();
 
-	RenderManager renderManager(&shaderManager, sphere.vertexBufferObject, windowWidth, windowHeight, sphere.vertexListSize);
-	renderManager.initializeGlutCallbacks();
+	Camera camera;
+
+	RenderManager renderManager(&shaderManager, &camera, sphere.vertexBufferObject, windowWidth, windowHeight, sphere.vertexListSize);
+	renderManager.bindDisplayCallbacks();
+
+	InputManager inputManager;
+	inputManager.bindInputCallbacks();
 
 	glutMainLoop();
 

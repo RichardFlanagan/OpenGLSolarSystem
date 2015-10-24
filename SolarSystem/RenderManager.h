@@ -3,11 +3,13 @@
 
 #include <GL/freeglut.h>
 #include "ShaderManager.h"
+#include "Camera.h"
 
 class RenderManager {
 public:
-	RenderManager(ShaderManager *sm, GLuint vbo, int w, int h, int size) {
+	RenderManager(ShaderManager *sm, Camera *cam, GLuint vbo, int w, int h, int size) {
 		shaderManager = sm;
+		camera = cam;
 		vertexBufferObject = vbo;
 		windowWidth = w;
 		windowHeight = h;
@@ -15,12 +17,13 @@ public:
 		renderInstance = this;
 	};
 	~RenderManager() {};
-	void initializeGlutCallbacks();
+	void bindDisplayCallbacks();
 private:
-	static void renderScene();
+	static void renderSceneCallback();
 	static RenderManager *renderInstance;
 
 	ShaderManager *shaderManager;
+	Camera *camera;
 	GLuint vertexBufferObject;
 	int windowWidth;
 	int windowHeight;
