@@ -15,14 +15,3 @@ void LightingManager::initializeLighting() {
 	glm::vec3 directionalLightIntensity = glm::vec3(0.7f, 0.7f, 0.7f);
 	glUniform3fv(shaderManager->getDirectionalLightIntensityLocation(), 1, &directionalLightIntensity[0]);
 }
-/*
-const GLuint LightingManager::getAmbientLightIntensityLocation() {
-	return gAmbientLightIntensityLocation;
-}
-const GLuint LightingManager::getDirectionalLightDirectionLocation() {
-	return gDirectionalLightDirectionLocation;
-}
-const GLuint LightingManager::getDirectionalLightIntensityLocation() {
-	return gDirectionalLightIntensityLocation;
-}
-*/

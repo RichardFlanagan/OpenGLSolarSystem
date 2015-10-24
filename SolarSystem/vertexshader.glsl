@@ -1,8 +1,8 @@
 #version 330
 
 layout (location = 0) in vec3 Position;
-//layout (location = 1) in vec4 Colour;
 layout (location = 1) in vec3 Normal;
+//layout (location = 1) in vec4 Colour;
 
 //out vec4 Colour0;
 out vec4 LightIntensity0;
@@ -24,6 +24,9 @@ uniform float gKa;
 uniform float gKd;
 
 
+/*
+	Calculate the transformation matrix for this vertex
+*/
 void calculateTransformationMatrix(out vec4 transform){
 	vec4 vertexPositionInModelSpace = vec4(Position, 1);
 	vec4 vertexInWorldSpace = gModelToWorldTransform * vertexPositionInModelSpace;
@@ -32,6 +35,9 @@ void calculateTransformationMatrix(out vec4 transform){
 	transform = vertexInClipSpace;
 }
 
+/*
+	Calculate the light intensity at this vertex
+*/
 void calculateLightIntensity(out vec4 lightIntensity){
 	// Calculate the ambient light intensity at the vertex : Ia = Ka * ambientLightIntensity
 	vec4 ambientLightIntensity = gKa * vec4(gAmbientLightIntensity, 1.0);

@@ -9,13 +9,7 @@ public:
 	LightingManager(ShaderManager *sm) : shaderManager(sm) {};
 	~LightingManager() {};
 	void initializeLighting();
-	/*const GLuint getAmbientLightIntensityLocation();
-	const GLuint getDirectionalLightDirectionLocation();
-	const GLuint getDirectionalLightIntensityLocation();*/
 private:
-	/*GLuint gAmbientLightIntensityLocation;
-	GLuint gDirectionalLightDirectionLocation;
-	GLuint gDirectionalLightIntensityLocation;*/
 	ShaderManager* shaderManager;
 };
 
