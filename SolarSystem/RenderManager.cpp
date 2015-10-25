@@ -1,36 +1,48 @@
+#include "RenderManager.h"
+#include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL/glew.h>
-#include "RenderManager.h"
 #include "ModelVertex.h"
 #include "ShaderManager.h"
-#include <iostream>
 
 /*
 	The instance of the RenderManager. This is required for the GLut display callback to reference the instansiated object attributes.
 */
-RenderManager* RenderManager::renderInstance;
+RenderManager* RenderManager::thisInstance;
+
+RenderManager::RenderManager(ShaderManager *sm, Camera *cam, GLuint vbo, int w, int h, int size) {
+	shaderManager = sm;
+	camera = cam;
+	vertexBufferObject = vbo;
+	windowWidth = w;
+	windowHeight = h;
+	vertexListSize = size;
+	thisInstance = this;
+};
 
 void RenderManager::renderSceneCallback() {
+	thisInstance->camera->update();
+
 	// Create our world space to view space transformation matrix
-	glm::mat4 worldToViewTransform = renderInstance->camera->getWorldToViewMatrix();
+	glm::mat4 worldToViewTransform = thisInstance->camera->getWorldToViewMatrix();
 
 	// Create out projection transform
-	glm::mat4 projectionTransform = glm::perspective(45.0f, (float)renderInstance->windowWidth / (float)renderInstance->windowHeight, 1.0f, 100.0f);
+	glm::mat4 projectionTransform = glm::perspective(45.0f, (float)thisInstance->windowWidth / (float)thisInstance->windowHeight, 1.0f, 100.0f);
 
 	// Update the transforms in the shader program on the GPU
-	glUniformMatrix4fv(renderInstance->shaderManager->getWorldToViewTransformLocation(), 1, GL_FALSE, &worldToViewTransform[0][0]);
-	glUniformMatrix4fv(renderInstance->shaderManager->getProjectionTransformLocation(), 1, GL_FALSE, &projectionTransform[0][0]);
+	glUniformMatrix4fv(thisInstance->shaderManager->getWorldToViewTransformLocation(), 1, GL_FALSE, &worldToViewTransform[0][0]);
+	glUniformMatrix4fv(thisInstance->shaderManager->getProjectionTransformLocation(), 1, GL_FALSE, &projectionTransform[0][0]);
 
-	glUniform1f(renderInstance->shaderManager->getKaLocation(), 0.8f);
-	glUniform1f(renderInstance->shaderManager->getKdLocation(), 0.8f);
+	glUniform1f(thisInstance->shaderManager->getKaLocation(), 0.8f);
+	glUniform1f(thisInstance->shaderManager->getKdLocation(), 0.8f);
 
 	//glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, renderInstance->vertexBufferObject);
+	glBindBuffer(GL_ARRAY_BUFFER, thisInstance->vertexBufferObject);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(ModelVertex), 0);
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(ModelVertex), (const GLvoid*)12);
 
@@ -48,8 +60,8 @@ void RenderManager::renderSceneCallback() {
 		trans = glm::translate(glm::mat4(1.0f), glm::vec3(-3.0f + (i*3.0f), y, 0.0f));
 		rot = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
 		modelToWorldTransform = trans * rot;
-		glUniformMatrix4fv(renderInstance->shaderManager->getModelToWorldTransformLocation(), 1, GL_FALSE, &modelToWorldTransform[0][0]);
-		glDrawArrays(GL_TRIANGLES, 0, renderInstance->vertexListSize);
+		glUniformMatrix4fv(thisInstance->shaderManager->getModelToWorldTransformLocation(), 1, GL_FALSE, &modelToWorldTransform[0][0]);
+		glDrawArrays(GL_TRIANGLES, 0, thisInstance->vertexListSize);
 	}
 
 	glDisableVertexAttribArray(0);

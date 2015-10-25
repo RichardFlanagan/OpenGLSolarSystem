@@ -1,12 +1,18 @@
+/*
+File: LightingManager.h
+Author: Richard Flanagan
+Description:
+*/
 #ifndef LIGHTING_MANAGER_H
 #define LIGHTING_MANAGER_H
 
+#include <GL/glew.h>
 #include <GL/freeglut.h>
 #include "ShaderManager.h"
 
 class LightingManager {
 public:
-	LightingManager(ShaderManager *sm) : shaderManager(sm) {};
+	LightingManager(ShaderManager *sm);
 	~LightingManager() {};
 	void initializeLighting();
 private:

@@ -1,3 +1,8 @@
+/*
+File: ModelVertex.h
+Author: Richard Flanagan
+Description:
+*/
 #ifndef MODEL_VERTEX_H
 #define MODEL_VERTEX_H
 

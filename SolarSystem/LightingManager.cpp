@@ -1,7 +1,12 @@
+#include "LightingManager.h"
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <glm/glm.hpp>
-#include "LightingManager.h"
+#include "ShaderManager.h"
+
+LightingManager::LightingManager(ShaderManager *sm) {
+	shaderManager = sm;
+}
 
 void LightingManager::initializeLighting() {
 	// Setup the ambient light

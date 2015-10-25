@@ -80,13 +80,6 @@ void setRenderOptions() {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
-void mouseClickCallback(int button, int state, int x, int y) {
-	std::cout << button << " " << state << " " << x << " " << y << std::endl;
-}
-void mouseMoveCallback(int x, int y) {
-	std::cout << "(" << x << ", " << y << ")" << std::endl;
-}
-
 int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);
@@ -96,20 +89,20 @@ int main(int argc, char** argv)
 
 	ModelContainer sphere;
 	createVertexBuffer(&sphere, "assets/sphere.obj");
-
+	
 	ShaderManager shaderManager;
 	shaderManager.loadShaders();
 
 	LightingManager lightingManager(&shaderManager);
 	lightingManager.initializeLighting();
 
-	Camera camera;
+	InputManager inputManager = InputManager();
+	inputManager.bindInputCallbacks();
+
+	Camera camera(&inputManager);
 
 	RenderManager renderManager(&shaderManager, &camera, sphere.vertexBufferObject, windowWidth, windowHeight, sphere.vertexListSize);
 	renderManager.bindDisplayCallbacks();
-
-	InputManager inputManager;
-	inputManager.bindInputCallbacks();
 
 	glutMainLoop();
 

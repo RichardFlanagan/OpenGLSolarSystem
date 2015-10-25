@@ -1,8 +1,12 @@
+/*
+File: ModelLoader.h
+Author: Richard Flanagan
+Description:
+*/
 #ifndef MODEL_LOADER_H
 #define MODEL_LOADER_H
 
 #include <string>
-#include <fstream>
 #include <vector>
 
 #include "ModelVertex.h"

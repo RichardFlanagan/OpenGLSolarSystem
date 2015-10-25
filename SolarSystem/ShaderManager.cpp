@@ -1,10 +1,11 @@
+#include "ShaderManager.h"
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include "Assertion.h"
-#include "ShaderManager.h"
+
 
 void ShaderManager::addShader(GLuint shaderProgram, const char* pShaderText, GLenum shaderType){
     GLuint shaderObj = glCreateShader(shaderType);

@@ -1,7 +1,13 @@
+/*
+File: ShaderManager.h
+Author: Richard Flanagan
+Description:
+*/
 #ifndef SHADER_MANAGER_H
 #define SHADER_MANAGER_H
 
 #include <string>
+#include <GL/glew.h>
 #include <GL/freeglut.h>
 
 class ShaderManager {
@@ -9,6 +15,7 @@ public:
 	ShaderManager() {};
 	~ShaderManager() {};
 	void loadShaders();
+
 	const GLuint getModelToWorldTransformLocation();
 	const GLuint getWorldToViewTransformLocation();
 	const GLuint getProjectionTransformLocation();
