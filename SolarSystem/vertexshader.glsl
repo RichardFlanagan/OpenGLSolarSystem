@@ -4,7 +4,7 @@ layout (location = 0) in vec3 Position;
 layout (location = 1) in vec3 Normal;
 //layout (location = 1) in vec4 Colour;
 
-//out vec4 Colour0;
+out vec4 Colour0;
 out vec4 LightIntensity0;
 
 // Transforms
@@ -63,5 +63,17 @@ void calculateLightIntensity(out vec4 lightIntensity){
 void main(){  
 	calculateTransformationMatrix(gl_Position);
 	calculateLightIntensity(LightIntensity0);
-	//Colour0 = vec4(1.0f, Position.y, 0.0f, 1.0f);
+
+	if(Position.x > -0.01f && Position.x < 0.01f){
+		Colour0 = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	}
+	else if(Position.y > -0.01f && Position.y < 0.01f){
+		Colour0 = vec4(0.0f, 1.0f, 0.0f, 1.0f);
+	} 
+	else if(Position.z > -0.01f && Position.z < 0.01f){
+		Colour0 = vec4(0.0f, 0.0f, 1.0f, 1.0f);
+	} 
+	else{
+		Colour0 = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	}
 }

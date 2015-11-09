@@ -14,11 +14,14 @@ Description:
 
 class RenderManager {
 public:
-	RenderManager(ShaderManager *sm, Camera *cam, GLuint vbo, int w, int h, int size);
+	RenderManager(ShaderManager *sm, Camera *cam, GLuint vbo, int w, int h, int size, int fps);
 	~RenderManager() {};
 	void bindDisplayCallbacks();
+	void setRenderOptions();
 private:
 	static void renderSceneCallback();
+	static void timedRenderCallback(int fps);
+	static void RenderManager::resizeWindowCallback(int width, int height);
 	static RenderManager *thisInstance;
 
 	ShaderManager *shaderManager;
@@ -27,6 +30,7 @@ private:
 	int windowWidth;
 	int windowHeight;
 	int vertexListSize;
+	int framesPerSecond;
 };
 
 #endif // RENDERER_MANAGER_H

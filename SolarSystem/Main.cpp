@@ -41,15 +41,18 @@ void createVertexBuffer(ModelContainer *container, std::string pathToModel) {
 	glBufferData(GL_ARRAY_BUFFER, sizeof(ModelVertex) * container->vertexListSize, &verts[0], GL_STATIC_DRAW);
 }
 
+
 /*
 	Create the GLut window
 */
-void createWindow() {
+void createWindow(int argc, char** argv) {
+	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowSize(windowWidth, windowHeight);
 	glutInitWindowPosition(windowPosX, windowPosY);
 	glutCreateWindow(windowTitle.c_str());
 }
+
 
 /*
 	Initialize GLew, exiting if there is an error
@@ -63,29 +66,9 @@ void initGlew() {
 	}
 }
 
-/*
-	Set GL flags used for rendering
-*/
-void setRenderOptions() {
-	// Enable the z-buffer
-	glEnable(GL_DEPTH_TEST);
-	// GL_LESS - Passes if the incoming depth value is less than the stored depth value
-	glDepthFunc(GL_LESS);
-
-	//Enable backface culling
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CCW);
-
-	// Set the default screen colour
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-}
-
-int main(int argc, char** argv)
-{
-	glutInit(&argc, argv);
-	createWindow();
+int main(int argc, char** argv) {
+	createWindow(argc, argv);
 	initGlew();
-	setRenderOptions();
 
 	ModelContainer sphere;
 	createVertexBuffer(&sphere, "assets/sphere.obj");
@@ -101,9 +84,10 @@ int main(int argc, char** argv)
 
 	Camera camera(&inputManager);
 
-	RenderManager renderManager(&shaderManager, &camera, sphere.vertexBufferObject, windowWidth, windowHeight, sphere.vertexListSize);
+	RenderManager renderManager(&shaderManager, &camera, sphere.vertexBufferObject, windowWidth, windowHeight, sphere.vertexListSize, 60);
+	renderManager.setRenderOptions();
 	renderManager.bindDisplayCallbacks();
-
+	
 	glutMainLoop();
 
 	return 0;
