@@ -31,6 +31,7 @@ private:
 	int windowHeight;
 	int vertexListSize;
 	int framesPerSecond;
+	static bool draw;
 };
 
 #endif // RENDERER_MANAGER_H

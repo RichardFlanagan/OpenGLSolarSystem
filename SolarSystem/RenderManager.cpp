@@ -197,13 +197,13 @@ void RenderManager::renderSceneCallback() {
 
 
 	//static const int planetListLength = 3;
-	
+
 	//PlanetaryBody sol("Sol", nullptr, glm::vec3(1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f,
 	//	glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(0.0f), 0.0f, glm::vec3(0.0f));
 
 	//PlanetaryBody earth("Earth", &sol, glm::vec3(0.5f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f,
 	//	glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f), glm::vec3(0.0f), 0.0f, glm::vec3(0.0f));
-	
+
 	//PlanetaryBody sol("Sol", nullptr,  glm::vec3(1.0f), 0.1f, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f);
 	//PlanetaryBody earth("Earth", &sol, glm::vec3(0.5f), 0.1f, glm::vec3(3.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f);
 	//PlanetaryBody luna("Luna", &earth, glm::vec3(0.2f), 0.1f, glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f);
@@ -216,7 +216,7 @@ void RenderManager::renderSceneCallback() {
 
 	for (int i = 0; i < planetListLength; i++) {
 		planets[i].update();
-		
+
 		glUniformMatrix4fv(thisInstance->shaderManager->getModelToWorldTransformLocation(), 1, GL_FALSE, &planets[i].modelToWorldTransform[0][0]);
 		glDrawArrays(GL_TRIANGLES, 0, thisInstance->vertexListSize);
 	}
@@ -285,32 +285,22 @@ void RenderManager::timedRenderCallback(int fps) {
 	glutTimerFunc(1000 / fps, RenderManager::timedRenderCallback, fps);
 }
 
-/*void RenderManager::resizeWindowCallback(int width, int height) {
-
-	// Screen ration = width/height. Height is at least 1
-	float ratio = (float) width / (height>0)?height:1;
-
-	// Use the Projection Matrix
-	glMatrixMode(GL_PROJECTION);
-
-	// Reset Matrix
-	glLoadIdentity();
-
-	// Set the viewport to be the entire window
+void RenderManager::resizeWindowCallback(int width, int height) {
 	glViewport(0, 0, width, height);
-
-	// Set the correct perspective.
-	gluPerspective(45, ratio, 1, 1000);
-
-	// Get Back to the Modelview
-	glMatrixMode(GL_MODELVIEW);
-}*/
+	std::cout << width << " " << std::endl;
+}
 
 void RenderManager::bindDisplayCallbacks() {
+	//
+	// NOTE
+	// display/idle = draw
+	// timer = update
+	// 
+
 	//glutDisplayFunc(RenderManager::renderSceneCallback);
 	//glutIdleFunc(RenderManager::renderSceneCallback);
 	glutTimerFunc(1000 / framesPerSecond, RenderManager::timedRenderCallback, framesPerSecond);
-	//glutReshapeFunc(RenderManager::resizeWindowCallback);
+	glutReshapeFunc(RenderManager::resizeWindowCallback);
 }
 
 void RenderManager::setRenderOptions() {
