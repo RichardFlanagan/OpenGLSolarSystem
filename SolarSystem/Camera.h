@@ -13,8 +13,8 @@ class Camera {
 public:
 	Camera(InputManager *im) {
 		inputManager = im;
-		speed = 0.01f;
-		position = glm::vec3(0.0f, 0.0f, 10.0f);
+		speed = 0.1f;
+		position = glm::vec3(0.0f, 20.0f, 40.0f);
 		target = glm::vec3(0.0f, 0.0f, 0.0f);
 		upDirection = glm::vec3(0.0f, 1.0f, 0.0f);
 	};

@@ -1,136 +1,13 @@
 #include "RenderManager.h"
 #include <iostream>
+#include <vector>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL/glew.h>
 #include "ModelVertex.h"
 #include "ShaderManager.h"
-
-
-struct PlanetaryBody {
-	PlanetaryBody* parent;
-	std::string name = "PlanetaryBody";
-
-	glm::vec3 scaleVec;
-	glm::vec3 rotationVec;
-	float rotationSpeed = 0.0f;
-	glm::vec3 planetTiltVec;
-	glm::vec3 orbitDistanceVec;
-	glm::vec3 orbitVec;
-	float orbitSpeed = 0.0f;
-	glm::vec3 orbitTiltVec;
-	
-	glm::mat4 scale;
-	glm::mat4 rotation;
-	glm::mat4 planetTilt;
-	glm::mat4 orbitDistance;
-	glm::mat4 orbit;
-	glm::mat4 orbitTilt;
-	glm::mat4 modelToWorldTransform = glm::mat4(0.0f);
-	
-
-	PlanetaryBody() {};
-
-	PlanetaryBody(
-		glm::vec3 scaleVec,
-		glm::vec3 orbitVec,
-		float orbitSpeed,
-		glm::vec3 orbitDistanceVec,
-		std::string name,
-		float rotationSpeed) :
-		scaleVec(scaleVec), orbitVec(orbitVec), orbitSpeed(orbitSpeed), orbitDistanceVec(orbitDistanceVec), name(name), rotationSpeed(rotationSpeed) {}
-
-	PlanetaryBody(std::string name, PlanetaryBody* parent, glm::vec3 scaleVec, glm::vec3 rotationVec, float rotationSpeed, glm::vec3 planetTiltVec, glm::vec3 orbitDistanceVec, glm::vec3 orbitVec, float orbitSpeed, glm::vec3 orbitTiltVec) :
-		name(name), parent(parent), scaleVec(scaleVec), rotationVec(rotationVec), rotationSpeed(rotationSpeed), planetTiltVec(planetTiltVec), 
-		orbitDistanceVec(orbitDistanceVec), orbitVec(orbitVec), orbitSpeed(orbitSpeed), orbitTiltVec(orbitTiltVec) {}
-
-
-	PlanetaryBody(std::string name, PlanetaryBody* parent, glm::vec3 scaleVec, float rotationSpeed, glm::vec3 orbitDistanceVec, glm::vec3 orbitVec, float orbitSpeed) :
-		name(name), parent(parent), scaleVec(scaleVec), rotationSpeed(rotationSpeed), orbitDistanceVec(orbitDistanceVec), orbitVec(orbitVec), orbitSpeed(orbitSpeed) {}
-
-
-	void update() {
-
-		if (name == "Sol") {
-			// Scale against Sol
-			scale = glm::scale(glm::mat4(1.0f), scaleVec);
-
-			// Rotation (day)
-			static float angleOfRotation = 0.0f; 
-			angleOfRotation += rotationSpeed;
-			rotation = glm::rotate(glm::mat4(1.0f), angleOfRotation, glm::vec3(0.0f, 1.0f, 0.0f));
-			
-			// Distance from the point of orbit
-			orbitDistance = glm::translate(glm::mat4(1.0f), orbitDistanceVec);
-
-			modelToWorldTransform = orbitDistance * rotation * scale;
-		} 
-		else if (name == "Earth") {
-			// Scale against Sol
-			scale = glm::scale(glm::mat4(1.0f), scaleVec);
-
-			// Rotation (day)
-			static float angleOfRotation = 0.0f; 
-			angleOfRotation += rotationSpeed;
-			rotation = glm::rotate(glm::mat4(1.0f), angleOfRotation, glm::vec3(0.0f, 1.0f, 0.0f));
-
-			// Angle from y-plane
-			planetTilt = glm::rotate(glm::mat4(1.0f), glm::radians(-23.44f), glm::vec3(0.0f, 0.0f, 1.0f));
-			
-			// Distance from the point of orbit
-			static float orbitAngle = 0.0f;
-			orbitAngle += orbitSpeed;
-			orbitDistance = glm::translate(glm::mat4(1.0f), orbitDistanceVec);
-			
-			// Orbit plane about parent
-			orbit = glm::rotate(glm::mat4(1.0f), orbitAngle, glm::vec3(0.0f, 1.0f, 0.0f));
-
-			// Angle above x-plane
-			orbitTilt = glm::rotate(glm::mat4(1.0f), glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-
-			//glm::mat4 parentOrbitDistance = glm::translate(glm::mat4(1.0f), parent->translateVec);
-			//glm::mat4 parentOrbit = glm::rotate(glm::mat4(1.0f), parent->angle, parent->rotateVec);
-			modelToWorldTransform = (orbit * orbitDistance * planetTilt * rotation * scale);
-		}
-		else if (name == "Luna") {
-			// Scale against Sol
-			scale = glm::scale(glm::mat4(1.0f), scaleVec);
-
-			// Rotation (day)
-			static float angleOfRotation = 0.0f; 
-			angleOfRotation += rotationSpeed;
-			rotation = glm::rotate(glm::mat4(1.0f), angleOfRotation, glm::vec3(0.0f, 1.0f, 0.0f));
-
-			// Angle from y-plane
-			planetTilt = glm::rotate(glm::mat4(1.0f), glm::radians(6.68f), glm::vec3(0.0f, 0.0f, 1.0f));
-
-			// Distance from the point of orbit
-			orbitDistance = glm::translate(glm::mat4(1.0f), orbitDistanceVec);
-
-			// Orbit plane about parent
-			static float orbitAngle = 0.0f;
-			orbitAngle += orbitSpeed;
-			orbit = glm::rotate(glm::mat4(1.0f), orbitAngle, glm::vec3(0.0f, 1.0f, 0.0f));
-
-			// Angle above x-plane
-			orbitTilt = glm::rotate(glm::mat4(1.0f), glm::radians(15.14f), glm::vec3(0.0f, 0.0f, 1.0f));
-
-			// Parent translation and rotation
-			glm::mat4 parentOrbitDistance = parent->orbitDistance;
-			glm::mat4 parentOrbit = parent->orbit;
-
-			// Model to world transform
-			modelToWorldTransform = parentOrbit * parentOrbitDistance * (orbitTilt * orbit * orbitDistance * planetTilt * rotation * scale);
-		}
-
-	}
-
-};
-
-struct Planet : public PlanetaryBody {
-
-};
-
+#include "PlanetaryBody.h"
+#include "PlanetManager.h"
 
 
 /*
@@ -156,7 +33,7 @@ void RenderManager::renderSceneCallback() {
 	glm::mat4 worldToViewTransform = thisInstance->camera->getWorldToViewMatrix();
 
 	// Create out projection transform
-	glm::mat4 projectionTransform = glm::perspective(45.0f, (float)thisInstance->windowWidth / (float)thisInstance->windowHeight, 1.0f, 100.0f);
+	glm::mat4 projectionTransform = glm::perspective(45.0f, (float)thisInstance->windowWidth / (float)thisInstance->windowHeight, 1.0f, 10000.0f);
 
 	// Update the transforms in the shader program on the GPU
 	glUniformMatrix4fv(thisInstance->shaderManager->getWorldToViewTransformLocation(), 1, GL_FALSE, &worldToViewTransform[0][0]);
@@ -174,53 +51,15 @@ void RenderManager::renderSceneCallback() {
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(ModelVertex), 0);
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(ModelVertex), (const GLvoid*)12);
 
-	static const int planetListLength = 3;
-	static PlanetaryBody planets[planetListLength]{
-		PlanetaryBody(
-			glm::vec3(1.0f, 1.0f, 1.0f),
-			glm::vec3(0.0f, 1.0f, 0.0f), 0.01f,
-			glm::vec3(0.0f, 0.0f, 0.0f),
-			"Sol", 0.01f),
-		PlanetaryBody(
-			glm::vec3(0.5f, 0.5f, 0.5f),
-			glm::vec3(0.0f, 1.0f, 0.0f), 0.01f,
-			glm::vec3(3.0f, 0.0f, 0.0f),
-			"Earth", 0.1f),
-		PlanetaryBody(
-			glm::vec3(0.2f, 0.2f, 0.2f),
-			glm::vec3(0.0f, 1.0f, 0.0f), 0.01f,
-			glm::vec3(1.0f, 0.0f, 0.0f),
-			"Luna", 0.1f)
-	};
-	planets[1].parent = &planets[0];
-	planets[2].parent = &planets[1];
+	static PlanetManager planetManager;
+	std::vector<PlanetaryBody*>* planets = planetManager.getPlanetaryBodies();
 
+	for (unsigned int i = 0; i < planets->size(); i++) {
+		planets->at(i)->update();
 
-	//static const int planetListLength = 3;
-
-	//PlanetaryBody sol("Sol", nullptr, glm::vec3(1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f,
-	//	glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(0.0f), 0.0f, glm::vec3(0.0f));
-
-	//PlanetaryBody earth("Earth", &sol, glm::vec3(0.5f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f,
-	//	glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f), glm::vec3(0.0f), 0.0f, glm::vec3(0.0f));
-
-	//PlanetaryBody sol("Sol", nullptr,  glm::vec3(1.0f), 0.1f, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f);
-	//PlanetaryBody earth("Earth", &sol, glm::vec3(0.5f), 0.1f, glm::vec3(3.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f);
-	//PlanetaryBody luna("Luna", &earth, glm::vec3(0.2f), 0.1f, glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.01f);
-
-	//static const int planetListLength = 3;
-	//static PlanetaryBody planets[planetListLength]{sol, earth, luna};
-
-
-
-
-	for (int i = 0; i < planetListLength; i++) {
-		planets[i].update();
-
-		glUniformMatrix4fv(thisInstance->shaderManager->getModelToWorldTransformLocation(), 1, GL_FALSE, &planets[i].modelToWorldTransform[0][0]);
+		glUniformMatrix4fv(thisInstance->shaderManager->getModelToWorldTransformLocation(), 1, GL_FALSE, &planets->at(i)->getModelToWorldTransform()[0][0]);
 		glDrawArrays(GL_TRIANGLES, 0, thisInstance->vertexListSize);
 	}
-
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
