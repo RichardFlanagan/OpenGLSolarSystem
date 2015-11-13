@@ -45,11 +45,14 @@
     <ClCompile Include="PlanetManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WindowManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VBO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Assertion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ModelVertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -75,6 +78,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PlanetManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VBO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,15 +1,16 @@
 #include "ShaderManager.h"
 #include <string>
+#include <assert.h>
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
-#include "Assertion.h"
 
 
 void ShaderManager::addShader(GLuint shaderProgram, const char* pShaderText, GLenum shaderType){
     GLuint shaderObj = glCreateShader(shaderType);
-	ASSERTION(shaderObj==0, "Error creating shader type " + shaderType);
+	assert(shaderObj != 0);
 
     const GLchar* p[1];
     p[0] = pShaderText;
@@ -25,7 +26,8 @@ void ShaderManager::addShader(GLuint shaderProgram, const char* pShaderText, GLe
         glGetShaderInfoLog(shaderObj, 1024, NULL, InfoLog);
 		std::stringstream ss;
 		ss << "Error compiling shader type " << shaderType << ": " << InfoLog << std::endl;
-		ASSERTION(!success, ss.str());
+		std::cout << ss.str() << std::endl;
+		assert(false);
     }
 
     glAttachShader(shaderProgram, shaderObj);
@@ -44,7 +46,7 @@ const std::string ShaderManager::readFileToString(char* filename) {
 
 void ShaderManager::buildShaders(){
     GLuint shaderProgram = glCreateProgram();
-	ASSERTION(shaderProgram==0, "Error creating shader program");
+	assert(shaderProgram != 0);
 
 	std::string VS = readFileToString("vertexShader.glsl");
 	std::string FS = readFileToString("fragmentShader.glsl");
@@ -61,7 +63,7 @@ void ShaderManager::buildShaders(){
 		glGetProgramInfoLog(shaderProgram, sizeof(errorLog), NULL, errorLog);
 		std::stringstream ss;
 		ss << "Error linking shader program: " << errorLog << std::endl;
-		ASSERTION(success==0, ss.str());
+		assert(false);
 	}
 
     glValidateProgram(shaderProgram);
@@ -70,34 +72,37 @@ void ShaderManager::buildShaders(){
         glGetProgramInfoLog(shaderProgram, sizeof(errorLog), NULL, errorLog);
         std::stringstream ss;
 		ss << "Error linking shader program: " << errorLog << std::endl;
-		ASSERTION(!success, ss.str());
+		assert(false);
     }
 
     glUseProgram(shaderProgram);
 
     gModelToWorldTransformLocation = glGetUniformLocation(shaderProgram, "gModelToWorldTransform");
-    ASSERTION(gModelToWorldTransformLocation != 0xFFFFFFFF, "Error: gModelToWorldTransformLocation not valid");
+    assert(gModelToWorldTransformLocation != 0xFFFFFFFF);
     
 	gWorldToViewTransformLocation = glGetUniformLocation(shaderProgram, "gWorldToViewTransform");
-	ASSERTION(gWorldToViewTransformLocation != 0xFFFFFFFF, "Error: gWorldToViewTransformLocation not valid");
+	assert(gWorldToViewTransformLocation != 0xFFFFFFFF);
     
 	gProjectionTransformLocation = glGetUniformLocation(shaderProgram, "gProjectionTransform"); 
-	ASSERTION(gProjectionTransformLocation != 0xFFFFFFFF, "Error: gProjectionTransformLocation not valid");
+	assert(gProjectionTransformLocation != 0xFFFFFFFF);
 
 	gAmbientLightIntensityLocation = glGetUniformLocation(shaderProgram, "gAmbientLightIntensity");
-	ASSERTION(gAmbientLightIntensityLocation != 0xFFFFFFFF, "Error: gAmbientLightIntensityLocation not valid");
+	assert(gAmbientLightIntensityLocation != 0xFFFFFFFF);
 	
 	gDirectionalLightIntensityLocation = glGetUniformLocation(shaderProgram, "gDirectionalLightIntensity");
-	ASSERTION(gDirectionalLightIntensityLocation != 0xFFFFFFFF, "Error: gDirectionalLightIntensityLocation not valid");
+	assert(gDirectionalLightIntensityLocation != 0xFFFFFFFF);
 	
 	gDirectionalLightDirectionLocation = glGetUniformLocation(shaderProgram, "gDirectionalLightDirection");
-	ASSERTION(gDirectionalLightDirectionLocation != 0xFFFFFFFF, "Error: gDirectionalLightDirectionLocation not valid");
+	assert(gDirectionalLightDirectionLocation != 0xFFFFFFFF);
 
 	gKaLocation = glGetUniformLocation(shaderProgram, "gKa");
-	ASSERTION(gKaLocation != 0xFFFFFFFF, "Error: gKaLocation not valid");
+	assert(gKaLocation != 0xFFFFFFFF);
 	
 	gKdLocation = glGetUniformLocation(shaderProgram, "gKd");
-	ASSERTION(gKaLocation != 0xFFFFFFFF, "Error: gKdLocation not valid");
+	assert(gKaLocation != 0xFFFFFFFF);
+
+	gModelColourLocation = glGetUniformLocation(shaderProgram, "gModelColourLocation");
+	assert(gModelColourLocation != 0xFFFFFFFF);
 }
 
 const GLuint ShaderManager::getModelToWorldTransformLocation() {
@@ -126,6 +131,10 @@ const GLuint ShaderManager::getKaLocation() {
 const GLuint ShaderManager::getKdLocation() {
 	return gKdLocation;
 }
+const GLuint ShaderManager::getModelColourLocation() {
+	return gModelColourLocation;
+}
+
 
 void ShaderManager::loadShaders() {
 	buildShaders();

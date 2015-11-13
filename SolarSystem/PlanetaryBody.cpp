@@ -66,9 +66,10 @@ void PlanetaryBody::update() {
 		// Parent translation and rotation
 		glm::mat4 parentOrbitDistance = parent->getOrbitDistanceMatrix();
 		glm::mat4 parentOrbit = parent->getOrbitMatrix();
+		glm::mat4 parentTilt = parent->getOrbitTiltMatrix();
 
 		// Model to world transform to parent
-		modelToWorldTransform = parentOrbit * parentOrbitDistance * modelToWorldTransform;
+		modelToWorldTransform = parentTilt * parentOrbit * parentOrbitDistance * modelToWorldTransform;
 	}
 }
 
@@ -166,4 +167,11 @@ glm::mat4 PlanetaryBody::getOrbitTiltMatrix() const {
 
 glm::mat4 PlanetaryBody::getModelToWorldTransform() const {
 	return modelToWorldTransform;
+}
+
+void PlanetaryBody::setColour(glm::vec3 col) {
+	colour = col;
+}
+glm::vec3 PlanetaryBody::getColour() const {
+	return colour;
 }

@@ -9,6 +9,8 @@
 class PlanetaryBody {
 public:
 	PlanetaryBody();
+	~PlanetaryBody() {};
+
 	void update();
 
 	std::string getName() const;
@@ -16,6 +18,9 @@ public:
 	
 	PlanetaryBody* getParent() const;
 	void setParent(PlanetaryBody* parent);
+
+	void setColour(glm::vec3 col);
+	glm::vec3 getColour() const;
 
 	void setScale(glm::vec3 scaleVector);
 	glm::vec3 getScaleVector() const;
@@ -54,6 +59,8 @@ private:
 	// The body which this orbits
 	PlanetaryBody* parent;
 	
+	// Planet colour
+	glm::vec3 colour;
 
 	// Scale
 	glm::vec3 scaleVector;

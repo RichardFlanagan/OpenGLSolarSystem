@@ -23,6 +23,9 @@ uniform vec3 gDirectionalLightDirection;
 uniform float gKa;
 uniform float gKd;
 
+// Model Colour
+uniform vec3 gModelColourLocation;
+
 
 /*
 	Calculate the transformation matrix for this vertex
@@ -74,6 +77,6 @@ void main(){
 		Colour0 = vec4(0.0f, 0.0f, 1.0f, 1.0f);
 	} 
 	else{
-		Colour0 = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+		Colour0 = vec4(gModelColourLocation.x, gModelColourLocation.y, gModelColourLocation.z, 1.0f);
 	}
 }

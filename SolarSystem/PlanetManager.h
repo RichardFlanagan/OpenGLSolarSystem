@@ -7,6 +7,8 @@
 class PlanetManager {
 public:
 	PlanetManager();
+	~PlanetManager() {};
+
 	std::vector<PlanetaryBody*>* getPlanetaryBodies();
 
 private:
@@ -33,36 +35,38 @@ private:
 
 	PlanetaryBody mars;
 	void createMars();
-	//PlanetaryBody deimos;
-	//PlanetaryBody phobos;
+	PlanetaryBody deimos;
+	void createDeimos();
+	PlanetaryBody phobos;
+	void createPhobos();
 
 	PlanetaryBody jupiter;
 	void createJupiter();
-	//PlanetaryBody ganymede;
-	//PlanetaryBody callisto;
-	//PlanetaryBody io;
-	//PlanetaryBody europa;
+	PlanetaryBody ganymede; 
+	void createGanymede();
+	PlanetaryBody callisto;
+	void createCallisto();
 
 	PlanetaryBody saturn;
 	void createSaturn();
-	//PlanetaryBody titan;
-	//PlanetaryBody rhea;
-	//PlanetaryBody lapetus;
-	//PlanetaryBody dione;
+	PlanetaryBody titan;
+	void createTitan();
+	PlanetaryBody rhea;
+	void createRhea();
 
 	PlanetaryBody uranus;
 	void createUranus();
-	//PlanetaryBody tiania;
-	//PlanetaryBody oberon;
-	//PlanetaryBody umbriel;
-	//PlanetaryBody ariel;
+	PlanetaryBody titania;
+	void createTitania();
+	PlanetaryBody oberon;
+	void createOberon();
 
 	PlanetaryBody neptune;
 	void createNeptune();
-	//PlanetaryBody triton;
-	//PlanetaryBody proteus;
-	//PlanetaryBody nereid;
-	//PlanetaryBody larissa;
+	PlanetaryBody triton;
+	void createTriton();
+	PlanetaryBody proteus;
+	void createProteus();
 
 };
 

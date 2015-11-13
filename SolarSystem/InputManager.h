@@ -10,6 +10,7 @@ class InputManager {
 public:
 	InputManager();
 	~InputManager() {};
+
 	void bindInputCallbacks();
 
 	const bool isUpPressed();

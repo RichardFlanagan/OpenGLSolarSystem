@@ -6,17 +6,27 @@
 
 LightingManager::LightingManager(ShaderManager *sm) {
 	shaderManager = sm;
+	ambientLightIntensity = glm::vec3(0.3f, 0.3f, 0.3f);
+	directionalLightDirection = glm::vec3(0.0f, 0.0f, 0.0f);
+	directionalLightIntensity = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
-void LightingManager::initializeLighting() {
+void LightingManager::updateUniformVariables() {
 	// Setup the ambient light
-	glm::vec3 ambientLightIntensity = glm::vec3(0.2f, 0.2f, 0.2f);
 	glUniform3fv(shaderManager->getAmbientLightIntensityLocation(), 1, &ambientLightIntensity[0]);
 
 	// Setup the direactional light
-	glm::vec3 directionalLightDirection = glm::vec3(0.0f, 0.0f, -1.0f);
 	glm::normalize(directionalLightDirection);
 	glUniform3fv(shaderManager->getDirectionalLightDirectionLocation(), 1, &directionalLightDirection[0]);
-	glm::vec3 directionalLightIntensity = glm::vec3(0.7f, 0.7f, 0.7f);
 	glUniform3fv(shaderManager->getDirectionalLightIntensityLocation(), 1, &directionalLightIntensity[0]);
+}
+
+void LightingManager::setAmbientLightIntensity(glm::vec3 vec) {
+	ambientLightIntensity = vec;
+}
+void LightingManager::setDirectionalLightDirection(glm::vec3 vec) {
+	directionalLightDirection = vec;
+}
+void LightingManager::setDirectionalLightIntensity(glm::vec3 vec) {
+	directionalLightIntensity = vec;
 }

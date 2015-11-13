@@ -15,6 +15,7 @@ class ModelLoader{
 public:
 	ModelLoader() {};
 	~ModelLoader() {};
+
 	bool loadModelFromObjFile(std::string path);
 	std::vector<ModelVertex>& getVertices();
 

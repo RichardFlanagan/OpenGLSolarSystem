@@ -14,6 +14,7 @@ class ShaderManager {
 public:
 	ShaderManager() {};
 	~ShaderManager() {};
+
 	void loadShaders();
 
 	const GLuint getModelToWorldTransformLocation();
@@ -26,6 +27,9 @@ public:
 
 	const GLuint getKaLocation();
 	const GLuint getKdLocation();
+
+	const GLuint getModelColourLocation();
+
 private:
 	GLuint gModelToWorldTransformLocation;
 	GLuint gWorldToViewTransformLocation;
@@ -35,6 +39,7 @@ private:
 	GLuint gAmbientLightIntensityLocation;
 	GLuint gDirectionalLightIntensityLocation;
 	GLuint gDirectionalLightDirectionLocation;
+	GLuint gModelColourLocation;
 
 	void addShader(GLuint shaderProgram, const char* pShaderText, GLenum shaderType);
 	const std::string readFileToString(char* filename);
