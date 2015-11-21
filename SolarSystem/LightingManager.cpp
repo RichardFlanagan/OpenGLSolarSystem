@@ -7,8 +7,7 @@
 LightingManager::LightingManager(ShaderManager *sm) {
 	shaderManager = sm;
 	ambientLightIntensity = glm::vec3(0.3f, 0.3f, 0.3f);
-	directionalLightDirection = glm::vec3(0.0f, 0.0f, 0.0f);
-	directionalLightIntensity = glm::vec3(0.5f);
+	diffuseLightIntensity = glm::vec3(0.5f);
 	specularLightIntensity = glm::vec3(1.0f);
 	ka = 0.8f;
 	kd = 0.8f;
@@ -21,9 +20,7 @@ void LightingManager::updateUniformVariables() {
 	glUniform1f(shaderManager->getKaLocation(), ka);
 
 	// Set up the directional light
-	glm::normalize(directionalLightDirection);
-	glUniform3fv(shaderManager->getDirectionalLightDirectionLocation(), 1, &directionalLightDirection[0]);
-	glUniform3fv(shaderManager->getDirectionalLightIntensityLocation(), 1, &directionalLightIntensity[0]);
+	glUniform3fv(shaderManager->getDiffuseLightIntensityLocation(), 1, &diffuseLightIntensity[0]);
 	glUniform1f(shaderManager->getKdLocation(), kd);
 
 	// Set up the specular light
@@ -34,11 +31,8 @@ void LightingManager::updateUniformVariables() {
 void LightingManager::setAmbientLightIntensity(glm::vec3 vec) {
 	ambientLightIntensity = vec;
 }
-void LightingManager::setDirectionalLightDirection(glm::vec3 vec) {
-	directionalLightDirection = vec;
-}
-void LightingManager::setDirectionalLightIntensity(glm::vec3 vec) {
-	directionalLightIntensity = vec;
+void LightingManager::setDiffuseLightIntensity(glm::vec3 vec) {
+	diffuseLightIntensity = vec;
 }
 void LightingManager::setSpecularLightIntensity(glm::vec3 vec) {
 	specularLightIntensity = vec;

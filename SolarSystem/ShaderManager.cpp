@@ -78,40 +78,37 @@ void ShaderManager::buildShaders(){
     glUseProgram(shaderProgram);
 
     gModelToWorldTransformLocation = glGetUniformLocation(shaderProgram, "gModelToWorldTransform");
-    //assert(gModelToWorldTransformLocation != 0xFFFFFFFF);
+    assert(gModelToWorldTransformLocation != 0xFFFFFFFF);
     
 	gWorldToViewTransformLocation = glGetUniformLocation(shaderProgram, "gWorldToViewTransform");
-	//assert(gWorldToViewTransformLocation != 0xFFFFFFFF);
+	assert(gWorldToViewTransformLocation != 0xFFFFFFFF);
     
 	gProjectionTransformLocation = glGetUniformLocation(shaderProgram, "gProjectionTransform"); 
-	//assert(gProjectionTransformLocation != 0xFFFFFFFF);
+	assert(gProjectionTransformLocation != 0xFFFFFFFF);
 
 	gAmbientLightIntensityLocation = glGetUniformLocation(shaderProgram, "gAmbientLightIntensity");
-	//assert(gAmbientLightIntensityLocation != 0xFFFFFFFF);
+	assert(gAmbientLightIntensityLocation != 0xFFFFFFFF);
 	
-	gDirectionalLightIntensityLocation = glGetUniformLocation(shaderProgram, "gDirectionalLightIntensity");
-	//assert(gDirectionalLightIntensityLocation != 0xFFFFFFFF);
+	gDiffuseLightIntensityLocation = glGetUniformLocation(shaderProgram, "gDiffuseLightIntensity");
+	assert(gDiffuseLightIntensityLocation != 0xFFFFFFFF);
 	
-	gDirectionalLightDirectionLocation = glGetUniformLocation(shaderProgram, "gDirectionalLightDirection");
-	//assert(gDirectionalLightDirectionLocation != 0xFFFFFFFF);
-
 	gSpecularLightIntensityLocation = glGetUniformLocation(shaderProgram, "gSpecularLightIntensity");
-	//assert(gSpecularLightIntensityLocation != 0xFFFFFFFF);
+	assert(gSpecularLightIntensityLocation != 0xFFFFFFFF);
 
 	gKaLocation = glGetUniformLocation(shaderProgram, "gKa");
-	//assert(gKaLocation != 0xFFFFFFFF);
+	assert(gKaLocation != 0xFFFFFFFF);
 	
 	gKdLocation = glGetUniformLocation(shaderProgram, "gKd");
-	//assert(gKdLocation != 0xFFFFFFFF);
+	assert(gKdLocation != 0xFFFFFFFF);
 
 	gKsLocation = glGetUniformLocation(shaderProgram, "gKs");
-	//assert(gKsLocation != 0xFFFFFFFF);
+	assert(gKsLocation != 0xFFFFFFFF);
 
 	gModelColourLocation = glGetUniformLocation(shaderProgram, "gModelColourLocation");
-	//assert(gModelColourLocation != 0xFFFFFFFF);
+	assert(gModelColourLocation != 0xFFFFFFFF);
 
 	gCameraPositionLocation = glGetUniformLocation(shaderProgram, "gCameraPositionLocation");
-	//assert(gCameraPositionLocation != 0xFFFFFFFF);
+	assert(gCameraPositionLocation != 0xFFFFFFFF);
 }
 
 const GLuint ShaderManager::getModelToWorldTransformLocation() {
@@ -127,11 +124,8 @@ const GLuint ShaderManager::getProjectionTransformLocation() {
 const GLuint ShaderManager::getAmbientLightIntensityLocation() {
 	return gAmbientLightIntensityLocation;
 }
-const GLuint ShaderManager::getDirectionalLightIntensityLocation() {
-	return gDirectionalLightIntensityLocation;
-}
-const GLuint ShaderManager::getDirectionalLightDirectionLocation() {
-	return gDirectionalLightDirectionLocation;
+const GLuint ShaderManager::getDiffuseLightIntensityLocation() {
+	return gDiffuseLightIntensityLocation;
 }
 const GLuint ShaderManager::getSpecularLightIntensityLocation() {
 	return gSpecularLightIntensityLocation;

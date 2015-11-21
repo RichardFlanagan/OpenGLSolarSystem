@@ -36,8 +36,7 @@ int main(int argc, char** argv) {
 	// LightingManager
 	LightingManager lightingManager(&shaderManager);
 	lightingManager.setAmbientLightIntensity(glm::vec3(0.2f));
-	lightingManager.setDirectionalLightDirection(glm::vec3(1.0f, 0.0f, 0.0f)); //(0.0f, 0.0f, -1.0f));
-	lightingManager.setDirectionalLightIntensity(glm::vec3(0.7f));
+	lightingManager.setDiffuseLightIntensity(glm::vec3(0.7f));
 	lightingManager.setSpecularLightIntensity(glm::vec3(0.9f));
 	lightingManager.updateUniformVariables();
 

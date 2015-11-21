@@ -22,8 +22,7 @@ public:
 	const GLuint getProjectionTransformLocation();
 
 	const GLuint getAmbientLightIntensityLocation();
-	const GLuint getDirectionalLightIntensityLocation();
-	const GLuint getDirectionalLightDirectionLocation();
+	const GLuint getDiffuseLightIntensityLocation();
 	const GLuint getSpecularLightIntensityLocation();
 
 	const GLuint getKaLocation();
@@ -43,8 +42,7 @@ private:
 	GLuint gKsLocation;
 
 	GLuint gAmbientLightIntensityLocation;
-	GLuint gDirectionalLightIntensityLocation;
-	GLuint gDirectionalLightDirectionLocation;
+	GLuint gDiffuseLightIntensityLocation;
 	GLuint gSpecularLightIntensityLocation;
 	GLuint gModelColourLocation;
 	GLuint gCameraPositionLocation;

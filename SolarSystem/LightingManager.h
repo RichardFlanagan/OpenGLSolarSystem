@@ -18,8 +18,7 @@ public:
 
 	void updateUniformVariables();
 	void setAmbientLightIntensity(glm::vec3 vec);
-	void setDirectionalLightDirection(glm::vec3 vec);
-	void setDirectionalLightIntensity(glm::vec3 vec);
+	void setDiffuseLightIntensity(glm::vec3 vec);
 	void setSpecularLightIntensity(glm::vec3 vec);
 
 	void setKa(float n);
@@ -30,8 +29,7 @@ private:
 	ShaderManager* shaderManager;
 
 	glm::vec3 ambientLightIntensity;
-	glm::vec3 directionalLightDirection;
-	glm::vec3 directionalLightIntensity;
+	glm::vec3 diffuseLightIntensity;
 	glm::vec3 specularLightIntensity;
 
 	float ka;
