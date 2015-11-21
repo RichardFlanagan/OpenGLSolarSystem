@@ -95,14 +95,23 @@ void ShaderManager::buildShaders(){
 	gDirectionalLightDirectionLocation = glGetUniformLocation(shaderProgram, "gDirectionalLightDirection");
 	assert(gDirectionalLightDirectionLocation != 0xFFFFFFFF);
 
+	gSpecularLightIntensityLocation = glGetUniformLocation(shaderProgram, "gSpecularLightIntensity");
+	assert(gSpecularLightIntensityLocation != 0xFFFFFFFF);
+
 	gKaLocation = glGetUniformLocation(shaderProgram, "gKa");
 	assert(gKaLocation != 0xFFFFFFFF);
 	
 	gKdLocation = glGetUniformLocation(shaderProgram, "gKd");
-	assert(gKaLocation != 0xFFFFFFFF);
+	assert(gKdLocation != 0xFFFFFFFF);
+
+	gKsLocation = glGetUniformLocation(shaderProgram, "gKs");
+	assert(gKsLocation != 0xFFFFFFFF);
 
 	gModelColourLocation = glGetUniformLocation(shaderProgram, "gModelColourLocation");
 	assert(gModelColourLocation != 0xFFFFFFFF);
+
+	gCameraPositionLocation = glGetUniformLocation(shaderProgram, "gCameraPositionLocation");
+	//assert(gCameraPositionLocation != 0xFFFFFFFF);
 }
 
 const GLuint ShaderManager::getModelToWorldTransformLocation() {
@@ -124,6 +133,9 @@ const GLuint ShaderManager::getDirectionalLightIntensityLocation() {
 const GLuint ShaderManager::getDirectionalLightDirectionLocation() {
 	return gDirectionalLightDirectionLocation;
 }
+const GLuint ShaderManager::getSpecularLightIntensityLocation() {
+	return gSpecularLightIntensityLocation;
+}
 
 const GLuint ShaderManager::getKaLocation() {
 	return gKaLocation;
@@ -131,10 +143,15 @@ const GLuint ShaderManager::getKaLocation() {
 const GLuint ShaderManager::getKdLocation() {
 	return gKdLocation;
 }
+const GLuint ShaderManager::getKsLocation() {
+	return gKsLocation;
+}
 const GLuint ShaderManager::getModelColourLocation() {
 	return gModelColourLocation;
 }
-
+const GLuint ShaderManager::getCameraPositionLocation() {
+	return gCameraPositionLocation;
+}
 
 void ShaderManager::loadShaders() {
 	buildShaders();

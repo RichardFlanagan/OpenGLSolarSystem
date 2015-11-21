@@ -37,7 +37,8 @@ int main(int argc, char** argv) {
 	LightingManager lightingManager(&shaderManager);
 	lightingManager.setAmbientLightIntensity(glm::vec3(0.2f));
 	lightingManager.setDirectionalLightDirection(glm::vec3(1.0f, 0.0f, 0.0f)); //(0.0f, 0.0f, -1.0f));
-	lightingManager.setDirectionalLightIntensity(glm::vec3(0.7f, 0.7f, 0.7f));
+	lightingManager.setDirectionalLightIntensity(glm::vec3(0.7f));
+	lightingManager.setSpecularLightIntensity(glm::vec3(0.9f));
 	lightingManager.updateUniformVariables();
 
 	// InputManager
@@ -47,13 +48,13 @@ int main(int argc, char** argv) {
 	// CameraManager
 	Camera camera(&inputManager, &windowManager);
 	camera.setCameraSpeed(1.0f);
-	camera.setViewPlanes(1.0f, 10000.0f);
+	camera.setViewPlanes(1.0f, 1000.0f);
 	camera.setPosition(glm::vec3(0.0f, 20.0f, 40.0f));
 	camera.setViewAngle(45.0f);
 
 	// RenderManager
 	RenderManager renderManager(&shaderManager, &camera, &windowManager, &sphere);
-	renderManager.setRenderOptions(60);
+	renderManager.setRenderOptions(30);
 	renderManager.bindDisplayCallbacks();
 	
 	// Main loop

@@ -24,22 +24,30 @@ public:
 	const GLuint getAmbientLightIntensityLocation();
 	const GLuint getDirectionalLightIntensityLocation();
 	const GLuint getDirectionalLightDirectionLocation();
+	const GLuint getSpecularLightIntensityLocation();
 
 	const GLuint getKaLocation();
 	const GLuint getKdLocation();
+	const GLuint getKsLocation();
 
 	const GLuint getModelColourLocation();
+	const GLuint getCameraPositionLocation();
 
 private:
 	GLuint gModelToWorldTransformLocation;
 	GLuint gWorldToViewTransformLocation;
 	GLuint gProjectionTransformLocation;
+
 	GLuint gKaLocation;
 	GLuint gKdLocation;
+	GLuint gKsLocation;
+
 	GLuint gAmbientLightIntensityLocation;
 	GLuint gDirectionalLightIntensityLocation;
 	GLuint gDirectionalLightDirectionLocation;
+	GLuint gSpecularLightIntensityLocation;
 	GLuint gModelColourLocation;
+	GLuint gCameraPositionLocation;
 
 	void addShader(GLuint shaderProgram, const char* pShaderText, GLenum shaderType);
 	const std::string readFileToString(char* filename);
