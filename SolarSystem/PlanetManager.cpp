@@ -3,7 +3,7 @@
 #include "PlanetaryBody.h"
 
 PlanetManager::PlanetManager() {
-	globalScale = 0.5f;
+	globalScale = 0.8f;
 	globalRotateSpeed = 6.0f;
 	globalOrbitSpeed = 1.0f;
 	globalDistScale = 20.0f;
@@ -26,6 +26,7 @@ PlanetManager::PlanetManager() {
 	createCallisto();
 
 	createSaturn();
+	createRingOfSaturn();
 	createTitan();
 	createRhea();
 
@@ -65,6 +66,7 @@ void PlanetManager::populatePlanetList() {
 	planetaryBodies.push_back(&callisto);
 
 	planetaryBodies.push_back(&saturn);
+	planetaryBodies.push_back(&ringOfSaturn);
 	planetaryBodies.push_back(&titan);
 	planetaryBodies.push_back(&rhea);
 
@@ -80,7 +82,8 @@ void PlanetManager::populatePlanetList() {
 
 void PlanetManager::createSol() {
 	sol.setName("Sol");
-	sol.setScale(glm::vec3(globalScale*10.9f));
+	//sol.setScale(glm::vec3(globalScale*10.9f));
+	sol.setScale(glm::vec3(5.0f));
 	sol.setRotation(glm::vec3(0.0f, 1.0f, 0.0f), globalRotateSpeed/25.05f); // 25.05 days
 	sol.setOrbitDistance(glm::vec3(0.0f));
 	sol.setColour(glm::vec3(1.0f, 1.0f, 0.0f));
@@ -220,6 +223,18 @@ void PlanetManager::createSaturn() {
 	saturn.setOrbit(glm::vec3(0.0f, 1.0f, 0.0f), globalOrbitSpeed * 0.034f); // 29.45 earth years
 	saturn.setOrbitTilt(glm::vec3(0.0f, 0.0f, 1.0f), 5.51f);
 	saturn.setColour(glm::vec3(0.8f, 0.8f, 0.0f));
+}
+
+void PlanetManager::createRingOfSaturn() {
+	ringOfSaturn.setName("RingOfSaturn");
+	ringOfSaturn.setParent(&sol);
+	ringOfSaturn.setScale(glm::vec3(globalScale*9.45f * 1.8f, globalScale*9.45f * 0.01f , globalScale*9.45f * 1.8f)); // 9.45 earth
+	ringOfSaturn.setRotation(glm::vec3(0.0f, 1.0f, 0.0f), globalRotateSpeed*2.2f);
+	ringOfSaturn.setPlanetTilt(glm::vec3(0.0f, 0.0f, 1.0f), 26.73f);
+	ringOfSaturn.setOrbitDistance(glm::vec3(globalDistScale * 9.58f, 0.0f, 0.0f)); // 9.58 earth-sun distance
+	ringOfSaturn.setOrbit(glm::vec3(0.0f, 1.0f, 0.0f), globalOrbitSpeed * 0.034f); // 29.45 earth years
+	ringOfSaturn.setOrbitTilt(glm::vec3(0.0f, 0.0f, 1.0f), 5.51f);
+	ringOfSaturn.setColour(glm::vec3(0.5f, 0.5f, 0.0f));
 }
 
 void PlanetManager::createTitan() {

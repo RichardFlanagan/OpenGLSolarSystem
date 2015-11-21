@@ -29,9 +29,6 @@ private:
 	bool zoomInPressed;
 	bool zoomOutPressed;
 	
-	static void mouseClickCallback(int button, int state, int x, int y);
-	static void mouseMoveCallback(int x, int y);
-	static void passiveMouseMoveCallback(int x, int y);
 	static void keyboardInputCallback(unsigned char key, int x, int y);
 	static void keyboardInputUpCallback(unsigned char key, int x, int y);
 	static void specialKeyboardInputCallback(int key, int x, int y);

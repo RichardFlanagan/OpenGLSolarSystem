@@ -17,8 +17,9 @@
 RenderManager* RenderManager::thisInstance;
 GLboolean RenderManager::requiresUpdate;
 
-RenderManager::RenderManager(ShaderManager *sm, Camera *cam, WindowManager* window, VBO* vbo) {
+RenderManager::RenderManager(ShaderManager *sm, LightingManager* lm, Camera *cam, WindowManager* window, VBO* vbo) {
 	shaderManager = sm;
+	lightingManager = lm;
 	camera = cam;
 	windowManager = window;
 	vertexBufferObject = vbo;
@@ -60,9 +61,16 @@ void RenderManager::renderSceneCallback() {
 	for (unsigned int i = 0; i < planets->size(); i++) {
 		if (requiresUpdate) {
 			planets->at(i)->update();
-			//glUniform3fv(thisInstance->shaderManager->getDirectionalLightDirectionLocation(), 1, &tt[0]);
 		}
 		
+		if (planets->at(i)->getName() == "Sol") {
+			glUniform3fv(thisInstance->shaderManager->getAmbientLightIntensityLocation(), 1, &glm::vec3(1.0f)[0]);
+			glUniform3fv(thisInstance->shaderManager->getDiffuseLightIntensityLocation(), 1, &glm::vec3(0.0f)[0]);
+			glUniform3fv(thisInstance->shaderManager->getSpecularLightIntensityLocation(), 1, &glm::vec3(0.0f)[0]);
+		}
+		else {
+			thisInstance->lightingManager->updateUniformVariables();
+		}
 
 		glUniformMatrix4fv(thisInstance->shaderManager->getModelToWorldTransformLocation(), 1, GL_FALSE, &planets->at(i)->getModelToWorldTransform()[0][0]);
 		glUniform3fv(thisInstance->shaderManager->getModelColourLocation(), 1, &planets->at(i)->getColour()[0]);

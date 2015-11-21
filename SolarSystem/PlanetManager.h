@@ -49,6 +49,8 @@ private:
 
 	PlanetaryBody saturn;
 	void createSaturn();
+	PlanetaryBody ringOfSaturn;
+	void createRingOfSaturn();
 	PlanetaryBody titan;
 	void createTitan();
 	PlanetaryBody rhea;

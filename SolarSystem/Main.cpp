@@ -13,12 +13,28 @@
 #include "VBO.h"
 
 
+int windowWidth = 800;
+int windowHeight = 600;
+int windowOffsetX = 100;
+int windowOffsetY = 100;
+std::string windowTitle = "A00193644 : Solar System";
+
+int framesPerSecond = 60;
+float cameraSpeed = 1.9f;
+glm::vec3 cameraPosition = glm::vec3(0.0f, 20.0f, 40.0f);
+std::string model = "assets/sphere.obj";
+
+glm::vec3 ambient = glm::vec3(0.1f);
+glm::vec3 diffuse = glm::vec3(0.8f);
+glm::vec3 specular = glm::vec3(0.9f);
+
+
 int main(int argc, char** argv) {
 	// WindowManager
 	WindowManager windowManager;
-	windowManager.setWindowDimensions(800, 600);
-	windowManager.setWindowPosition(100, 100);
-	windowManager.setWindowTitle("A00193644 : Solar System");
+	windowManager.setWindowDimensions(windowWidth, windowHeight);
+	windowManager.setWindowPosition(windowOffsetX, windowOffsetY);
+	windowManager.setWindowTitle(windowTitle.c_str());
 	windowManager.createWindow(argc, argv);
 	
 	// GLEW
@@ -26,7 +42,7 @@ int main(int argc, char** argv) {
 	assert(res == GLEW_OK);
 
 	// VertexBufferObject
-	VBO sphere("assets/sphere.obj");
+	VBO sphere(model);
 	sphere.loadModel();
 
 	// ShaderManager
@@ -35,9 +51,9 @@ int main(int argc, char** argv) {
 	
 	// LightingManager
 	LightingManager lightingManager(&shaderManager);
-	lightingManager.setAmbientLightIntensity(glm::vec3(0.2f));
-	lightingManager.setDiffuseLightIntensity(glm::vec3(0.7f));
-	lightingManager.setSpecularLightIntensity(glm::vec3(0.9f));
+	lightingManager.setAmbientLightIntensity(ambient);
+	lightingManager.setDiffuseLightIntensity(diffuse);
+	lightingManager.setSpecularLightIntensity(specular);
 	lightingManager.updateUniformVariables();
 
 	// InputManager
@@ -46,14 +62,14 @@ int main(int argc, char** argv) {
 
 	// CameraManager
 	Camera camera(&inputManager, &windowManager);
-	camera.setCameraSpeed(1.0f);
+	camera.setCameraSpeed(cameraSpeed);
 	camera.setViewPlanes(1.0f, 1000.0f);
-	camera.setPosition(glm::vec3(0.0f, 20.0f, 40.0f));
+	camera.setPosition(cameraPosition);
 	camera.setViewAngle(45.0f);
 
 	// RenderManager
-	RenderManager renderManager(&shaderManager, &camera, &windowManager, &sphere);
-	renderManager.setRenderOptions(60);
+	RenderManager renderManager(&shaderManager, &lightingManager, &camera, &windowManager, &sphere);
+	renderManager.setRenderOptions(framesPerSecond);
 	renderManager.bindDisplayCallbacks();
 	
 	// Main loop

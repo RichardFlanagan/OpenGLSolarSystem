@@ -10,13 +10,14 @@ Description:
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include "ShaderManager.h"
+#include "LightingManager.h"
 #include "Camera.h"
 #include "WindowManager.h"
 #include "VBO.h"
 
 class RenderManager {
 public:
-	RenderManager(ShaderManager *sm, Camera *cam, WindowManager* window, VBO* vbo);
+	RenderManager(ShaderManager* sm, LightingManager* lm, Camera* cam, WindowManager* window, VBO* vbo);
 	~RenderManager() {};
 
 	void bindDisplayCallbacks();
@@ -24,12 +25,12 @@ public:
 private:
 	static void renderSceneCallback();
 	static void timedRenderCallback(int fps);
-	//static void RenderManager::resizeWindowCallback(int width, int height);
 	static RenderManager *thisInstance;
 	static GLboolean requiresUpdate;
 
-	ShaderManager *shaderManager;
-	Camera *camera;
+	ShaderManager* shaderManager;
+	LightingManager* lightingManager;
+	Camera* camera;
 	WindowManager* windowManager;
 	VBO* vertexBufferObject;
 	

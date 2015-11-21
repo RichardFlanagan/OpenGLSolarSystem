@@ -21,6 +21,10 @@ public:
 	void setDiffuseLightIntensity(glm::vec3 vec);
 	void setSpecularLightIntensity(glm::vec3 vec);
 
+	glm::vec3 getAmbientLightIntensity() const;
+	glm::vec3 getDiffuseLightIntensity() const;
+	glm::vec3 getSpecularLightIntensity() const;
+
 	void setKa(float n);
 	void setKd(float n);
 	void setKs(float n);
