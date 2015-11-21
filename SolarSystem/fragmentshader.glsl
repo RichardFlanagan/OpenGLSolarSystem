@@ -118,12 +118,62 @@ void calculateColour(out vec4 colour){
 }
 
 
+void calcAmbientLight(out vec4 ambientLight){
+	// Ia = Ka * ambientLightIntensity
+	ambientLight = gKa * vec4(gAmbientLightIntensity, 1.0);
+	ambientLight = clamp(ambientLight, 0.0f, 1.0f);
+}
+
+
+void calcDiffuseLight(in vec3 normalInWorldSpace, in vec3 lightDirection, out vec4 diffuseLight){	
+	// Calculate N.L
+	float diffuseFactor = dot(normalInWorldSpace, lightDirection);
+	diffuseFactor = clamp(diffuseFactor, 0.0, 1.0);
+	
+	// Id = kd * lightItensity * N.L
+    diffuseLight = gKd * vec4(gDirectionalLightIntensity, 1.0f) * diffuseFactor;
+	diffuseLight = clamp(diffuseLight, 0.0f, 1.0f);
+}
+
+
+void calcSpecularLight(in vec3 normalInWorldSpace, in vec3 lightDirection, out vec4 specularLight){
+    vec3 viewVector = normalize(gCameraPositionLocation);
+
+	// Calculate (N.H)**a
+	vec3 H = normalize(-lightDirection+viewVector);
+	float nha = pow(dot(normalInWorldSpace, H), 30);
+
+	// Is = ks * lightIntensity * (N.H)**a
+	specularLight = gKs * vec4(gSpecularLightIntensity, 1.0f) * nha;
+	specularLight = clamp(specularLight, 0.0f, 1.0f);
+}
+
+
+void calcLightIntensity(out vec4 lightIntensity){
+	vec3 normalInWorldSpace = normalize((gModelToWorldTransform * vec4(Normal0, 0.0)).xyz);
+	vec3 lightDirection = normalize((gModelToWorldTransform * vec4(-1.0f)).xyz);
+
+	vec4 ambientLight;
+	calcAmbientLight(ambientLight);
+
+	vec4 diffuseLight;
+	calcDiffuseLight(normalInWorldSpace, lightDirection, diffuseLight);
+	
+	lightDirection = normalize((gModelToWorldTransform * vec4(0.0f, 0.0f, 0.0f, 0.0f)).xyz);
+	vec4 specularLight;
+	calcSpecularLight(normalInWorldSpace, lightDirection, specularLight);
+	
+	lightIntensity = (ambientLight + diffuseLight + specularLight);
+	lightIntensity = clamp(lightIntensity, 0.0f, 1.0f);
+}
+
+
 void main(){
-	vec4 LightIntensity0;
-	calculateLightIntensity(LightIntensity0);
+	vec4 colour;
+	calculateColour(colour);
 
-	vec4 Colour0;
-	calculateColour(Colour0);
+	vec4 lightIntensity;
+	calcLightIntensity(lightIntensity);
 
-    FragColor = Colour0 * LightIntensity0;
+    FragColor = colour * lightIntensity;
 }

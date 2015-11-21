@@ -160,6 +160,6 @@ void main(){
 	transformationPosition(gl_Position);
 	
 	glPosition0 = gl_Position.xyz;
-	Position0 = Position; //gl_Position.xyz;
+	Position0 = Position;
 	Normal0 = Normal;
 }
