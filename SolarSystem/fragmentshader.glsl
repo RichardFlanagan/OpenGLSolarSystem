@@ -17,10 +17,9 @@ void main(){
 
 ////////////////////////////// (NEW CODE) //////////////////////////////
 
+in vec3 glPosition0;
 in vec3 Position0;
 in vec3 Normal0;
-uniform mat4 gModelToWorldTransform;
-out vec4 FragColor;
 
 // Ambient light parameters
 uniform vec3 gAmbientLightIntensity;
@@ -41,6 +40,8 @@ uniform float gKs;
 uniform vec3 gModelColourLocation;
 uniform vec3 gCameraPositionLocation;
 
+uniform mat4 gModelToWorldTransform;
+out vec4 FragColor;
 
 
 void calculateLightIntensity(out vec4 lightIntensity){
@@ -49,11 +50,12 @@ void calculateLightIntensity(out vec4 lightIntensity){
 	normalInWorldSpace = normalize(normalInWorldSpace);
 
 	// Setup the light direction and normalise it
-	vec3 lightDirection = normalize(-gDirectionalLightDirection);
+	//vec3 lightDirection = normalize(-gDirectionalLightDirection);
+	vec3 lightDirection = normalize(glPosition0); // Sun is at 0,0,0, so the light vector is the pos of this point
 
 	// Get the view vector
-	vec3 camPos = vec3(0.0f, 20.0f, 40.0f);
-    vec3 viewVector = (gCameraPositionLocation-Position0);
+	//vec3 camPos = vec3(0.0f, 20.0f, 40.0f);
+    vec3 viewVector = normalize(gCameraPositionLocation - glPosition0);  // normalize(gCameraPositionLocation - Position0);
 
 
 	//
@@ -95,7 +97,7 @@ void calculateLightIntensity(out vec4 lightIntensity){
     //
 	// Final vertex colour is the product of the vertex colour and the total light intensity at the vertex 
 	//
-	lightIntensity = ambientLightIntensity + diffuseLightIntensity-diffuseLightIntensity + specularLightIntensity-specularLightIntensity;
+	lightIntensity = ambientLightIntensity + diffuseLightIntensity + specularLightIntensity;
 }
 
 

@@ -131,9 +131,9 @@ void main(){
 layout (location = 0) in vec3 Position;
 layout (location = 1) in vec3 Normal;
 
+out vec3 glPosition0;
 out vec3 Position0;
 out vec3 Normal0;
-out mat4 gModelToWorldTransform0;
 
 // Transforms
 uniform mat4 gModelToWorldTransform;
@@ -144,9 +144,9 @@ uniform mat4 gProjectionTransform;
 
 
 /*
-	Calculate the transformation matrix for this vertex
+	Calculate the transformation for this vertex
 */
-void calculateTransformationMatrix(out vec4 transform){
+void transformationPosition(out vec4 transform){
 	vec4 vertexPositionInModelSpace = vec4(Position, 1);
 	vec4 vertexInWorldSpace = gModelToWorldTransform * vertexPositionInModelSpace;
 	vec4 vertexInCameraSpace = gWorldToViewTransform * vertexInWorldSpace;
@@ -157,8 +157,9 @@ void calculateTransformationMatrix(out vec4 transform){
 
                                                        
 void main(){  
-	Position0 = Position;
+	transformationPosition(gl_Position);
+	
+	glPosition0 = gl_Position.xyz;
+	Position0 = Position; //gl_Position.xyz;
 	Normal0 = Normal;
-	gModelToWorldTransform0 = gModelToWorldTransform;
-	calculateTransformationMatrix(gl_Position);
 }

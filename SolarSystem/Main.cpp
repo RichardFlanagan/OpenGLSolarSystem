@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
 
 	// RenderManager
 	RenderManager renderManager(&shaderManager, &camera, &windowManager, &sphere);
-	renderManager.setRenderOptions(30);
+	renderManager.setRenderOptions(60);
 	renderManager.bindDisplayCallbacks();
 	
 	// Main loop

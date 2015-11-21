@@ -93,7 +93,7 @@ void ShaderManager::buildShaders(){
 	assert(gDirectionalLightIntensityLocation != 0xFFFFFFFF);
 	
 	gDirectionalLightDirectionLocation = glGetUniformLocation(shaderProgram, "gDirectionalLightDirection");
-	assert(gDirectionalLightDirectionLocation != 0xFFFFFFFF);
+	//assert(gDirectionalLightDirectionLocation != 0xFFFFFFFF);
 
 	gSpecularLightIntensityLocation = glGetUniformLocation(shaderProgram, "gSpecularLightIntensity");
 	assert(gSpecularLightIntensityLocation != 0xFFFFFFFF);

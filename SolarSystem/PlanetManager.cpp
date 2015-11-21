@@ -3,7 +3,7 @@
 #include "PlanetaryBody.h"
 
 PlanetManager::PlanetManager() {
-	globalScale = 0.3f;
+	globalScale = 0.5f;
 	globalRotateSpeed = 6.0f;
 	globalOrbitSpeed = 1.0f;
 	globalDistScale = 20.0f;
